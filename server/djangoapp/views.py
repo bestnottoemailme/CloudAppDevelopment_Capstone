@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-# from .restapis import related methods
+# from .restapis import get_dealer_by_id, get_dealers_from_cf, get_dealers_by_state, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -15,6 +15,20 @@ logger = logging.getLogger(__name__)
 
 
 # Create your views here.
+# View to render the index page with a list of dealerships
+def get_dealerships(request):
+    return render(request,'djangoapp/index.html')
+    # if request.method == "GET":
+    #     context = {}
+    #     # url = "https://9bebcb01.eu-de.apigw.appdomain.cloud/api/dealership"
+    #     # # Get dealers from the Cloudant DB
+    #     # context["dealerships"] = get_dealers_from_cf(url)
+    #     context["dealerships"] = {}
+
+    #     # dealer_names = ' '.join([dealer.short_name for dealer in context["dealerships"]])
+    #     # return HttpResponse(dealer_names)
+
+    #     return render(request, 'djangoapp/index.html', context)
 
 
 # Create an `about` view to render a static about page
@@ -29,29 +43,25 @@ def contact(request):
 # Create a `login_request` view to handle sign in request
 def login_request(request):
     context = {}
-    # Handles POST request
     if request.method == "POST":
-        # Get username and password from request.POST dictionary
         username = request.POST['username']
         password = request.POST['psw']
-        # Try to check if provide credential can be authenticated
         user = authenticate(username=username, password=password)
         if user is not None:
-            # If user is valid, call login method to login current user
             login(request, user)
             return redirect('djangoapp:index')
         else:
-            # If not, return to login page again
-            return render(request, 'djangoapp/index.html', context)
+            context['message'] = "Invalid username or password."
+            return render(request, 'djangoapp/login.html', context)
     else:
-        return render(request, 'djangoapp/index.html', context)
+        return render(request, 'djangoapp/login.html', context)
 
 # ...
 
-# Create a `logout_request` view to handle sign out request
+# View to handle sign out request
 def logout_request(request):
     # Get the user object based on session id in request
-    print("Log out the user `{}`".format(request.user.username))
+    print("Logging out `{}`...".format(request.user.username))
     # Logout user in the request
     logout(request)
     # Redirect user back to course list view
@@ -62,16 +72,6 @@ def registration_request(request):
     return render(request,'djangoapp/registration.html')
 
 
-# Update the `get_dealerships` view to render the index page with a list of dealerships
-def get_dealerships(request):
-    if request.method == "GET":
-        url = "your-cloud-function-domain/dealerships/dealer-get"
-        # Get dealers from the URL
-        dealerships = get_dealers_from_cf(url)
-        # Concat all dealer's short name
-        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
-        # Return a list of dealer short name
-        return HttpResponse(dealer_names)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer

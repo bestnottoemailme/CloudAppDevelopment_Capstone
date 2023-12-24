@@ -14,15 +14,17 @@
 </head>
 
     <body>
-     This is the index page of your Django app!
+    <!-- Remove this line the first time you edit this file -->
+    <center><h1>Best Car DealerShip Website</h1></center>
+    <p></p>
     <!--Add a nav bar here -->
     <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                  <a class="navbar-brand" href="#">Main</a>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
+    <div class="container-fluid">
+        <div class="navbar-header">
+              <a class="navbar-brand" href="#">Main</a>
+        </div>
+              <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
                 <li>
                     <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
                     <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
@@ -40,11 +42,31 @@
                     </form>
                 </li>
                 {% endif %}
-            </ul>
-        </div>
-    </nav>
+              </ul>
+
+        
+    </div>
+</nav>
     <!--Add a dealer table here -->
 
+    <h2><center>Dealer's Table</center></h2>
+    <table style="width:50%">
+  <tr>
+    <th>Firstname</th>
+    <th>Lastname</th>
+    <th>Age</th>
+  </tr>
+  <tr>
+    <td>Jill</td>
+    <td>Smith</td>
+    <td>50</td>
+  </tr>
+  <tr>
+    <td>Eve</td>
+    <td>Jackson</td>
+    <td>94</td>
+  </tr>
+</table>
     </body>
 
 </html>
